@@ -1,0 +1,47 @@
+
+{
+	"DataPath" : "/home/yordan/Workspace/BabyMIND_FEB/bm-daq/data/",
+	"Devices" : 
+	[
+		
+		{
+			"Boards" : 
+			[
+				
+				{
+					"ConfigurationBinary" : "",
+					"ConfigurationJosn" : "GTrig_only_config2.json",
+					"Id" : 3,
+					"Name" : "Board"
+				}
+			],
+			"Id" : 0,
+			"Name" : "Device"
+		},
+		
+		{
+			"Boards" : 
+			[
+				
+				{
+					"ConfigurationBinary" : "",
+					"ConfigurationJosn" : "GTrig_only_config2.json",
+					"Id" : 5,
+					"Name" : "Board"
+				}
+			],
+			"Id" : 1,
+			"Name" : "Device"
+		}
+	],
+	"Name" : "BABY_MIND_CONFIG",
+	"RunNumber" : 299,
+	"UsbParam" : 
+	{
+		"FileLimit" : 262100000,
+		"PacketSize" : 32768,
+		"StopOnTimeout" : true,
+		"Timeout" : 1000
+	},
+	"VerboseLevel" : 2
+}

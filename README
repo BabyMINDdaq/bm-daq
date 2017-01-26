@@ -1,0 +1,47 @@
+About:
+------------------------------------------------------------
+BM-DAQ is part of BabyMINDdaq software package. The software provides an
+implementation of a Finite-state machine, used for the data acquisition
+of the Baby MIND neutrino detector. BM-DAQ is designed for internal use for
+the Baby MIND detector collaboration and is tailored for this use primarily.
+
+Third Party Software:
+------------------------------------------------------------
+The external dependencies of the bm-daq package are listed below:
+
+1. libUSB, JsonCpp and ZeroMQ
+  In order to install the packages on Ubuntu do the following:
+    sudo apt-get install libusb-1.0-0-dev libjsoncpp-dev libzmq-dev
+
+  In order to install the packages on Centos as root do the following:
+    yum install libusb-devel jsoncpp-devel cppzmq-devel -y
+
+2. libufec
+ https://github.com/BabyMINDdaq/libufec
+
+3. libufecpp
+ https://github.com/BabyMINDdaq/libufecpp
+
+4. mic11api
+ https://github.com/yordan-karadzhov/mic11api
+
+5. bm-unpack
+ https://github.com/BabyMINDdaq/bm-unpack
+
+In order to install dependencies 2, 3, 4 and 5 do:
+./instal_third_party.sh
+
+
+Install:
+------------------------------------------------------------
+To build the library do:
+  cd build
+  cmake ../
+  make
+
+
+
+
+
+
+

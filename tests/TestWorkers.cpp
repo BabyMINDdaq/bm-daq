@@ -69,7 +69,6 @@ void TestWorkers::TestEventBuilderInitClose() {
 }
 
 void TestWorkers::TestEBProcessCase1() {
-  cerr << endl;
   BMDEventBuilder eb2;
   eb2.recorder().setRunNum(1999);
 
@@ -199,7 +198,6 @@ void TestWorkers::TestEBProcessCase1() {
 }
 
 void TestWorkers::TestEBProcessCase2() {
-  cerr << endl;
   BMDEventBuilder eb3;
   eb3.recorder().setRunNum(2999);
 

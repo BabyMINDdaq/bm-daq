@@ -161,11 +161,12 @@ void BMDEventBuilder::init() {
 proc_status_t BMDEventBuilder::process() {
 
   int boardId = (**output_).boardId();
-  int nSpillHeaders = (**output_).spill_headers_.size();
-  int nSpillTrailers = (**output_).spill_trailers_.size();
 
-  MDdataWordBM data_word_;
-
+//   int nSpillHeaders = (**output_).spill_headers_.size();
+//   int nSpillTrailers = (**output_).spill_trailers_.size();
+// 
+//   MDdataWordBM data_word_;
+// 
 //   if (nSpillTrailers) {
 //     for (auto const & t: (**output_).spill_trailers_) {
 //       data_word_.SetDataPtr( (**output_).buffer() + t - 8);

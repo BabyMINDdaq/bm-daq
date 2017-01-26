@@ -41,7 +41,7 @@ export BMDAQ_INSTALL=OK
 
 mv libufec-master libufec
 cd libufec
-./build_and_test.sh
+source build_and_test.sh
 if [ $BMDAQ_INSTALL = "OK" ]; then
   cd $BMDAQ/../
 else
@@ -51,7 +51,7 @@ fi
 
 mv libufecpp-master libufecpp
 cd libufecpp
-./build_and_test.sh
+source build_and_test.sh
 if [ $BMDAQ_INSTALL = "OK" ]; then
   cd $BMDAQ/../
 else
@@ -60,7 +60,7 @@ fi
 
 mv mic11api-master mic11api
 cd mic11api
-./build_and_test.sh
+source build_and_test.sh
 if [ $BMDAQ_INSTALL = "OK" ]; then
   cd $BMDAQ/../
 else

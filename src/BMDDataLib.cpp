@@ -154,7 +154,6 @@ void DataFragmentBuilder::moveToEventBank() {
                     UFEError::FATAL);
   }
 
-  cerr << "moveToEventBank tag: " << h_dw.GetSpillTag() << " / " <<  t_dw.GetSpillTag() << endl;
   (**out_data_).append(this->mem_bank_);
   (**out_data_).header_->size_ += this->mem_bank_.size();
   (**out_data_).header_->n_fragments_++;

@@ -166,27 +166,27 @@ proc_status_t BMDEventBuilder::process() {
 
   MDdataWordBM data_word_;
 
-  if (nSpillTrailers) {
-    for (auto const & t: (**output_).spill_trailers_) {
-      data_word_.SetDataPtr( (**output_).buffer() + t - 8);
-      cerr << "$$1 " << data_word_ << endl;
-
-      data_word_.SetDataPtr( (**output_).buffer() + t - 4);
-      cerr << "$$2 " << data_word_ << endl;
-
-      data_word_.SetDataPtr( (**output_).buffer() + t );
-      cerr << "$$3 " << data_word_ << endl;
-    }
-
-    cerr << "\n\n\n";
-  }
-
-  if (nSpillHeaders) {
-    for (auto const & h: (**output_).spill_headers_) {
-      data_word_.SetDataPtr( (**output_).buffer() + h );
-      cerr << "$$ " << data_word_ << endl;
-    }
-  }
+//   if (nSpillTrailers) {
+//     for (auto const & t: (**output_).spill_trailers_) {
+//       data_word_.SetDataPtr( (**output_).buffer() + t - 8);
+//       cerr << "$$1 " << data_word_ << endl;
+// 
+//       data_word_.SetDataPtr( (**output_).buffer() + t - 4);
+//       cerr << "$$2 " << data_word_ << endl;
+// 
+//       data_word_.SetDataPtr( (**output_).buffer() + t );
+//       cerr << "$$3 " << data_word_ << endl;
+//     }
+// 
+//     cerr << "\n\n\n";
+//   }
+// 
+//   if (nSpillHeaders) {
+//     for (auto const & h: (**output_).spill_headers_) {
+//       data_word_.SetDataPtr( (**output_).buffer() + h );
+//       cerr << "$$ " << data_word_ << endl;
+//     }
+//   }
 
   board_event_builders_[boardId]->process();
 

@@ -18,60 +18,46 @@
 # along with BabyMINDdaq. If not, see <http://www.gnu.org/licenses/>.
 
 BMDAQ=$PWD
-cd ..
-
-wget https://github.com/BabyMINDdaq/libufec/archive/master.zip
-unzip master.zip
-rm master.zip
-
-wget https://github.com/BabyMINDdaq/libufecpp/archive/master.zip
-unzip master.zip
-rm master.zip
-
-wget https://github.com/yordan-karadzhov/mic11api/archive/master.zip
-unzip master.zip
-rm master.zip
-
-wget https://github.com/BabyMINDdaq/bm-unpack/archive/master.zip
-unzip master.zip
-rm master.zip
 
 BMDAQ_INSTALL=OK
 
-mv libufec-master libufec
+cd ..
+
+git clone git@github.com:BabyMINDdaq/libufec.git
+
+git clone git@github.com:BabyMINDdaq/libufecpp.git
+
+git clone git@github.com:yordan-karadzhov/mic11api.git
+
+git clone git@github.com:BabyMINDdaq/bm-unpack.git
+
 cd libufec
 source build_and_test.sh
-if [ $BMDAQ_INSTALL = "OK" ]; then
-  cd $BMDAQ/../
-else
+if [ $BMDAQ_INSTALL = "ERROR" ]; then
   exit
 fi
 
-
-mv libufecpp-master libufecpp
+cd $BMDAQ/../
 cd libufecpp
 source build_and_test.sh
-if [ $BMDAQ_INSTALL = "OK" ]; then
-  cd $BMDAQ/../
-else
+if [ $BMDAQ_INSTALL = "ERROR" ]; then
   exit
 fi
 
-mv mic11api-master mic11api
+cd $BMDAQ/../
 cd mic11api
 source build_and_test.sh
-if [ $BMDAQ_INSTALL = "OK" ]; then
-  cd $BMDAQ/../
-else
+if [ $MIC11_INSTALL = "ERROR" ]; then
+  BMDAQ_INSTALL=ERROR
   exit
 fi
 
-mv bm-unpack-master bm-unpack
+cd $BMDAQ/../
 cd bm-unpack/build/
 cmake ..
 make
-if [ $BMDAQ_INSTALL = "OK" ]; then
-  cd $BMDAQ
-else
+if [ $BMDAQ_INSTALL = "ERROR" ]; then
   exit
 fi
+
+cd $BMDAQ

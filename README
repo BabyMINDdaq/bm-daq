@@ -35,10 +35,17 @@ In order to install dependencies 2, 3, 4 and 5 do:
 Install:
 ------------------------------------------------------------
 To build the library do:
+Option 1
+  source install_build_and_test.sh
+
+In case of using Option 1, you do not have to run instal_third_party.sh.
+This option is recommended when you install from scratch.
+
+
+Option 2
   cd build
   cmake ../
   make
-
 
 
 

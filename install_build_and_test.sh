@@ -18,6 +18,7 @@
 # along with BabyMINDdaq. If not, see <http://www.gnu.org/licenses/>.
 
 export BMDAQ_INSTALL=OK
+export BMDAQ=$PWD
 
 source install_third_party.sh
 
@@ -28,7 +29,7 @@ if [ $BMDAQ_INSTALL = "ERROR" ]; then
   exit
 fi
 
-cd ../
+cd $BMDAQ/../
 BMDAQ_ROOT=$PWD
 BMDAQ_PATH=$BMDAQ_ROOT/bm-unpack/bin/:$BMDAQ_ROOT/libufec/bin/:$BMDAQ_ROOT/libufecpp/bin/
 cd -
@@ -39,7 +40,8 @@ echo "export PATH="$BMDAQ_PATH:'$'"PATH" >bm-daq-env.sh
 
 if [ $BMDAQ_INSTALL = "OK" ]; then
 
-  source ../bm-daq-env.sh
+
+  source $BMDAQ/bm-daq-env.sh
 
 fi
 

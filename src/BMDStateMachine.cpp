@@ -90,8 +90,8 @@ void BMDIdle::whenEnteringStateDo(Fsm *sm, fsm_state_t old_state) {
     // BM front-end boards.
     if (nFebDevs != ctx->bm_config_doc_["Devices"].size()) {
       ufe_error_print("Device description mismatch.");
-//       sm->changeState(fsm_state_t::FatalError_s);
-//       return;
+      sm->changeState(fsm_state_t::FatalError_s);
+      return;
     }
 
     try {

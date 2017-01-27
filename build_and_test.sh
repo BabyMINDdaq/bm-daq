@@ -17,29 +17,30 @@
 # You should have received a copy of the GNU General Public License
 # along with BabyMINDdaq. If not, see <http://www.gnu.org/licenses/>.
 
-export BMDAQ_INSTALL=OK
 
-source install_third_party.sh
+cd build
+./cmake_clean.sh &> /dev/null
+cmake ..
+make
 
-if [ $BMDAQ_INSTALL = "ERROR" ]; then
+echo
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "++                         Running the unit tests.                             ++"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+../bin/unit_test
+
+if [ $? -eq 0 ]; then
+
+  echo "All tests OK."
   echo
-  echo "Failed to install third party libraries!"
+
+else
+
+  BMDAQ_INSTALL=ERROR
+  echo "Failed unit tests. Aborting"
   echo
-  exit
+
 fi
 
-cd ../
-BMDAQ_ROOT=$PWD
-BMDAQ_PATH=$BMDAQ_ROOT/bm-unpack/bin/:$BMDAQ_ROOT/libufec/bin/:$BMDAQ_ROOT/libufecpp/bin/
-cd -
-echo "export PATH="$BMDAQ_PATH:'$'"PATH" >bm-daq-env.sh
-
-./build_and_test.sh
-
-
-if [ $BMDAQ_INSTALL = "OK" ]; then
-
-  source ../bm-daq-env.sh
-
-fi
+rm *.000
 

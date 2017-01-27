@@ -37,7 +37,7 @@ wget https://github.com/BabyMINDdaq/bm-unpack/archive/master.zip
 unzip master.zip
 rm master.zip
 
-export BMDAQ_INSTALL=OK
+BMDAQ_INSTALL=OK
 
 mv libufec-master libufec
 cd libufec

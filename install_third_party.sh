@@ -23,14 +23,32 @@ BMDAQ_INSTALL=OK
 
 cd ..
 
-git clone git@github.com:BabyMINDdaq/libufec.git
+# git clone git@github.com:BabyMINDdaq/libufec.git
+# 
+# git clone git@github.com:BabyMINDdaq/libufecpp.git
+# 
+# git clone git@github.com:yordan-karadzhov/mic11api.git
+# 
+# git clone git@github.com:BabyMINDdaq/bm-unpack.git
 
-git clone git@github.com:BabyMINDdaq/libufecpp.git
+wget https://github.com/BabyMINDdaq/libufec/archive/master.zip
+unzip master.zip
+rm master.zip
 
-git clone git@github.com:yordan-karadzhov/mic11api.git
+wget https://github.com/BabyMINDdaq/libufecpp/archive/master.zip
+unzip master.zip
+rm master.zip
 
-git clone git@github.com:BabyMINDdaq/bm-unpack.git
+wget https://github.com/yordan-karadzhov/mic11api/archive/master.zip
+unzip master.zip
+rm master.zip
 
+wget https://github.com/BabyMINDdaq/bm-unpack/archive/master.zip
+unzip master.zip
+rm master.zip
+
+
+mv libufec-master libufec
 cd libufec
 source build_and_test.sh
 if [ $BMDAQ_INSTALL = "ERROR" ]; then
@@ -38,6 +56,7 @@ if [ $BMDAQ_INSTALL = "ERROR" ]; then
 fi
 
 cd $BMDAQ/../
+mv libufecpp-master libufecpp
 cd libufecpp
 source build_and_test.sh
 if [ $BMDAQ_INSTALL = "ERROR" ]; then
@@ -45,6 +64,7 @@ if [ $BMDAQ_INSTALL = "ERROR" ]; then
 fi
 
 cd $BMDAQ/../
+mv mic11api-master mic11api
 cd mic11api
 source build_and_test.sh
 if [ $MIC11_INSTALL = "ERROR" ]; then
@@ -53,6 +73,7 @@ if [ $MIC11_INSTALL = "ERROR" ]; then
 fi
 
 cd $BMDAQ/../
+mv bm-unpack-master bm-unpack
 cd bm-unpack/build/
 cmake ..
 make

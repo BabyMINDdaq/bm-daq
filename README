@@ -14,7 +14,7 @@ The external dependencies of the bm-daq package are listed below:
     sudo apt-get install libusb-1.0-0-dev libjsoncpp-dev libzmq-dev libcppunit-dev
 
   In order to install the packages on Centos as root do the following:
-    yum install libusb-devel jsoncpp-devel cppzmq-devel cppunit-devel qt5-qtbase-devel -y
+    yum install libusb-devel jsoncpp-devel zeromq3-devel cppunit-devel qt5-qtbase-devel -y
 
 2. libufec
  https://github.com/BabyMINDdaq/libufec

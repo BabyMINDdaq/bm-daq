@@ -56,9 +56,13 @@ void BMDDataScanner::init() {
 }
 
 proc_status_t BMDDataScanner::process() {
-  uint32_t *data = (**output_).get32bWordPtr(0);
   uint64_t nDw = (**output_).size()/4;
+  if (nDw == 0) {
+    ufe_error_print("empty data container.");
+    return proc_status_t::Error_s;
+  }
 
+  uint32_t *data = (**output_).get32bWordPtr(0);
   trigger_tag_ = 0;
   uint64_t xDw=0;
   while (trigger_tag_ == 0 && xDw<nDw) {

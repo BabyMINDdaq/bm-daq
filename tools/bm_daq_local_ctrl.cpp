@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
   Fsm fsm;
   fsm.setUserFactory<UFEStateFactory>();
 
-  auto myInput = [] {
+  auto localInput = [] {
     this_thread::sleep_for(std::chrono::milliseconds(10));
     int choice;
     cout << "Enter 1/2/3/4/>4 (On / Start / Stop / Off / Exit): \n";
@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     return choice;
   };
 
-  fsm.start(myInput, 0);
+  fsm.start(localInput, 0);
 
 //   } catch (UFEError &e) {
 //     cerr << e.getDescription() << endl;

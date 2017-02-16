@@ -31,7 +31,7 @@ fi
 
 cd $BMDAQ/../
 BMDAQ_ROOT=$PWD
-BMDAQ_PATH=$BMDAQ_ROOT/bm-unpack/bin/:$BMDAQ_ROOT/libufec/bin/:$BMDAQ_ROOT/libufecpp/bin/
+BMDAQ_PATH=$BMDAQ_ROOT/bm-daq/bin/:$BMDAQ_ROOT/bm-unpack/bin/:$BMDAQ_ROOT/libufec/bin/:$BMDAQ_ROOT/libufecpp/bin/:
 cd -
 echo "export PATH="$BMDAQ_PATH:'$'"PATH" >bm-daq-env.sh
 

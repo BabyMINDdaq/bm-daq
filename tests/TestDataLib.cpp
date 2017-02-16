@@ -48,7 +48,7 @@ void TestDataLib::TestFragment() {
     data[i] = i;
 
 
-  fr1.append(data, 64);
+  fr1.UFEDataContainer::append(data, 64);
   fr1.header_->size_ += 64;
   CPPUNIT_ASSERT( fr1.header_->size_ == fr1.size() );
 
@@ -107,7 +107,7 @@ void TestDataLib::TestEvent() {
   for (int i=0; i<64; ++i)
     data[i] = i;
 
-  ev1.append(data, 64);
+  ev1.UFEDataContainer::append(data, 64);
   ev1.header_->size_ += 64;
 
   CPPUNIT_ASSERT( ev1.header_->size_ == ev1.size() );

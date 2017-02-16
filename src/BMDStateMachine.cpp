@@ -1,4 +1,4 @@
-/** This file is part of BabyMINDdaq software package. This software
+/* This file is part of BabyMINDdaq software package. This software
  * package is designed for internal use for the Baby MIND detector
  * collaboration and is tailored for this use primarily.
  *
@@ -13,12 +13,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with BabyMINDdaq.  If not, see <http://www.gnu.org/licenses/>.
- *
- *  \author   Yordan Karadzhov <Yordan.Karadzhov \at cern.ch>
- *            University of Geneva
- *
- *  \created  Nov 2016
+ * along with BabyMINDdaq. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+/**
+ *  \file    BMDStateMachine.cpp
+ *  \brief   File containing implementation of the Baby MIND DAQ Finite-state machine.
+ *  \author  Yordan Karadzhov
+ *  \date    Nov 2016
  */
 
 // C++
@@ -30,13 +33,15 @@
 #include "libufe-core.h"
 #include "libufe-tools.h"
 
-
-#include "BMDStateMachine.h"
-#include "BMDDeff.h"
+// libufecpp
 #include "UFEError.h"
 #include "UFEDevice.h"
 #include "UFEContext.h"
 #include "UFEDeff.h"
+
+// bm-daq
+#include "BMDStateMachine.h"
+#include "BMDDeff.h"
 
 using namespace std;
 
@@ -53,6 +58,7 @@ void BMDIdle::whenEnteringStateDo(Fsm *sm, fsm_state_t old_state) {
     } catch (UFEError &e) {
       cerr << e.getDescription() << endl;
       cerr << e.getLocation() << endl;
+      // Change the state according to the severity of the error.
       if (e.getSeverity() == UFEError::SERIOUS) {
         sm->changeState(fsm_state_t::Failure_s);
         return;
@@ -94,6 +100,7 @@ void BMDIdle::whenEnteringStateDo(Fsm *sm, fsm_state_t old_state) {
       return;
     }
 
+    // Initialize one UFEDevice for each BM front-end board.
     try {
       ctx->devs_.resize(nFebDevs);
       int xDev =0;
@@ -108,6 +115,7 @@ void BMDIdle::whenEnteringStateDo(Fsm *sm, fsm_state_t old_state) {
     } catch (UFEError &e) {
       cerr << e.getDescription() << endl;
       cerr << e.getLocation() << endl;
+      // Change the state according to the severity of the error.
       if (e.getSeverity() == UFEError::SERIOUS) {
         sm->changeState(fsm_state_t::Failure_s);
         return;
@@ -142,6 +150,7 @@ void BMDIdle::whenSameStateDo(Fsm *sm) {
   } catch (UFEError &e) {
     cerr << e.getDescription() << endl;
     cerr << e.getLocation() << endl;
+    // Change the state according to the severity of the error.
     if (e.getSeverity() == UFEError::SERIOUS) {
       sm->changeState(fsm_state_t::Failure_s);
       return;
@@ -205,14 +214,16 @@ bool BMDIdle::setDeviceDescription(UFEDevice *dev, Json::Value bm_config_doc_) {
 /*                        BMDStandby                                           */
 /////////////////////////////////////////////////////////////////////////////////
 std::shared_ptr< PtrFifo<UFEDataContainer*> > BMDStandby::recycled_containers_fifo_(nullptr);
+double BMDStandby::data_size_ = 0;
+
 BMDEventBuilder* BMDStandby::rec_proc_ptr_(nullptr);
 
 void BMDStandby::whenEnteringStateDo(Fsm *sm, fsm_state_t old_state) {
-  int maxSize(20);
+  int maxSize(50);
   try {
     if (old_state == fsm_state_t::Idle_s) { //  This means that the system is turning ON.
       UFEContext *ctx = UFEContext::instance();
-      // Configurat all BM front-end boards.
+      // Configure all BM front-end boards.
       for (auto &dev: ctx->devs_) {
         for (auto const &board: dev.device_descr_["Boards"]) {
           if (!dev.isOpen())
@@ -293,12 +304,16 @@ void BMDStandby::whenEnteringStateDo(Fsm *sm, fsm_state_t old_state) {
       recycled_containers_fifo_->push( new UFEDataContainer() );
     }
 
+    // Get the size of the data from the run.
+    data_size_ = rec_proc_ptr_->recorder().getDataSize()/(1024.*1024);
+
     // Initialize all workers.
     Standby::whenEnteringStateDo(sm, old_state);
 
   } catch (UFEError e) {
     cerr << e.getDescription() << endl;
     cerr << e.getLocation() << endl;
+    // Change the state according to the severity of the error.
     if (e.getSeverity() == UFEError::SERIOUS) {
       sm->changeState(fsm_state_t::Failure_s);
       return;
@@ -318,7 +333,7 @@ void BMDStandby::whenSameStateDo(Fsm *sm) {
   else
     cout << "duration: " << BMDActive::getDuration()/60. << " minutes\n";
 
-  cout << "data recorded: " << rec_proc_ptr_->recorder().getDataSize()/(1024.*1024) << " MB\n\n";
+  cout << "data recorded: " << data_size_ << " MB\n\n";
 }
 
 void BMDStandby::whenLeavingStateDo(Fsm *sm, fsm_state_t new_state) {
@@ -340,7 +355,7 @@ void BMDActive::whenEnteringStateDo(Fsm *sm, fsm_state_t old_state) {
   // Get the time of the start of the run.
   t0_ = GET_TIME;
 
-  // Send a DATA_READOUT command to all boards in order to enable starts the readout.
+  // Send a DATA_READOUT command to all boards in order to start the readout.
   try {
     UFEContext *ctx = UFEContext::instance();
     for (auto &dev: ctx->devs_) {
@@ -350,6 +365,7 @@ void BMDActive::whenEnteringStateDo(Fsm *sm, fsm_state_t old_state) {
   } catch (UFEError e) {
     cerr << e.getDescription() << endl;
     cerr << e.getLocation() << endl;
+    // Change the state according to the severity of the error.
     if (e.getSeverity() == UFEError::SERIOUS) {
       sm->changeState(fsm_state_t::Failure_s);
       return;
@@ -369,7 +385,7 @@ void BMDActive::whenLeavingStateDo(Fsm *sm, fsm_state_t new_state) {
 
   UFEContext *ctx = UFEContext::instance();
 
-  // Send a DATA_READOUT command to all boards in order to enable stop the readout.
+  // Send a DATA_READOUT command to all boards in order to stop the readout.
   try {
     for (auto &dev: ctx->devs_) {
       dev.stop();
@@ -377,6 +393,7 @@ void BMDActive::whenLeavingStateDo(Fsm *sm, fsm_state_t new_state) {
   } catch (UFEError e) {
     cerr << e.getDescription() << endl;
     cerr << e.getLocation() << endl;
+    // Change the state according to the severity of the error.
     if (e.getSeverity() == UFEError::SERIOUS) {
       sm->changeState(fsm_state_t::Failure_s);
       return;
@@ -386,9 +403,8 @@ void BMDActive::whenLeavingStateDo(Fsm *sm, fsm_state_t new_state) {
     }
   }
 
-  // Get the duration of the run.
+  // Get run info.
   run_duration_ = GET_DURATION(t0_);
-
   if (ctx->bm_config_doc_["VerboseLevel"].asInt() > 1) {
     // Print some usefull information.
     for (auto &w: sm->getWorkers())
@@ -396,6 +412,16 @@ void BMDActive::whenLeavingStateDo(Fsm *sm, fsm_state_t new_state) {
   }
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////
+/*                        BMDFailure                                         */
+//////////////////////////////////////////////////////////////////////////////////
+void BMDFailure::whenLeavingStateDo(Fsm *sm, fsm_state_t new_state) {
+  // The system is going Off and the workers are dismissed.
+  // New workers will be hired if the system enters Standby again.
+  sm->dismissWorkers();
+  sm->dismissNodes();
+}
 
 //////////////////////////////////////////////////////////////////////////////////
 /*                        BMDFatalError                                         */

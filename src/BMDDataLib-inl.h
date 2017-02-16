@@ -1,4 +1,4 @@
-/** This file is part of BabyMINDdaq software package. This software
+/* This file is part of BabyMINDdaq software package. This software
  * package is designed for internal use for the Baby MIND detector
  * collaboration and is tailored for this use primarily.
  *
@@ -14,11 +14,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with BabyMINDdaq. If not, see <http://www.gnu.org/licenses/>.
- *
- *  \author   Yordan Karadzhov <Yordan.Karadzhov \at cern.ch>
- *            University of Geneva
- *
- *  \created  Jan 2017
+ */
+
+
+/**
+ *  \file    BMDDataLib-inl.h
+ *  \brief   File containing abstrct implementation of the classe BMDMemBank
+ *  managing the Baby MIND DAQ binary data.
+ *  \author  Yordan Karadzhov
+ *  \date    Dec 2016
  */
 
 template<typename HeaderType>
@@ -61,6 +65,22 @@ BMDMemBank<HeaderType>& BMDMemBank<HeaderType>::operator=(BMDMemBank &&b) {
   }
 
   return *this;
+}
+
+template<typename HeaderType>
+void BMDMemBank<HeaderType>::append(const UFEDataContainer &c) {
+  this->UFEDataContainer::append(c);
+  header_        = reinterpret_cast<HeaderType*>(this->buffer());
+  header_->size_ = this->size();
+}
+
+template<typename HeaderType>
+void BMDMemBank<HeaderType>::append(const UFEDataContainer &c,
+                                                            unsigned int pos,
+                                                            size_t size) {
+  this->UFEDataContainer::append(c, pos, size);
+  header_        = reinterpret_cast<HeaderType*>(this->buffer());
+  header_->size_ = this->size();
 }
 
 template<typename HeaderType>

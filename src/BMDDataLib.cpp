@@ -1,4 +1,4 @@
-/** This file is part of BabyMINDdaq software package. This software
+/* This file is part of BabyMINDdaq software package. This software
  * package is designed for internal use for the Baby MIND detector
  * collaboration and is tailored for this use primarily.
  *
@@ -13,12 +13,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with BabyMINDdaq.  If not, see <http://www.gnu.org/licenses/>.
- *
- *  \author   Yordan Karadzhov <Yordan.Karadzhov \at cern.ch>
- *            University of Geneva
- *
- *  \created  Jan 2017
+ * along with BabyMINDdaq. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+/**
+ *  \file    BMDDataLib.cpp
+ *  \brief   File containing implementation of the classes managing
+ *  the Baby MIND DAQ binary data.
+ *  \author  Yordan Karadzhov
+ *  \date    Dec 2016
  */
 
 #include "UFEError.h"
@@ -58,7 +62,6 @@ void DataFragmentBuilder::process() {
   size_t xSize;
   if ( mem_bank_.spill_headers_.size() == 0 ) {
     // No spill data so far. We expect a Spill header.
-
     if ( (**in_data_).spill_headers_.size() != 0 ) {
       // We have the header.
       if ( (**in_data_).spill_trailers_.size() == 0 ) {
@@ -66,14 +69,12 @@ void DataFragmentBuilder::process() {
         // Ignor the data befor the header.
         xSize = (**in_data_).size() - (**in_data_).spill_headers_[0];
         mem_bank_.append( **in_data_, (**in_data_).spill_headers_[0], xSize );
-        mem_bank_.header_->size_ += xSize;
         return;
       } else if ( (**in_data_).spill_trailers_[0] >= (**in_data_).spill_headers_[0] ) {
         // This container has 1 header and 1 trailer, and the trailer comes after the header.
         // Ignor the data befor the header and after the trailer.
         xSize = (**in_data_).spill_trailers_[0] - (**in_data_).spill_headers_[0] + 4;
         mem_bank_.append( **in_data_, (**in_data_).spill_headers_[0], xSize );
-        mem_bank_.header_->size_ += xSize;
         // Move the completed fragment to the Event memory bank.
         moveToEventBank();
         return;
@@ -84,7 +85,6 @@ void DataFragmentBuilder::process() {
         // the first spill of the run. When the bug is fixed, remove the whole "else" block.
         xSize = (**in_data_).size() - (**in_data_).spill_headers_[0];
         mem_bank_.append( **in_data_, (**in_data_).spill_headers_[0], xSize );
-        mem_bank_.header_->size_ += xSize;
         return;
       }
     } else if ( (**in_data_).spill_headers_.size() == 0 &&
@@ -94,7 +94,6 @@ void DataFragmentBuilder::process() {
     }
   } else if ( mem_bank_.spill_headers_.size() == 1 ) {
     // We are in the middle of the spill. We expect a Spill trailer.
-
     if ( (**in_data_).spill_headers_.size() == 0 &&
          (**in_data_).spill_trailers_.size() == 0 ) {
       // No trailer in this container. Append the whole container.
@@ -106,7 +105,6 @@ void DataFragmentBuilder::process() {
       // This spill ends here, but the next one has not started yet.
       size_t xSize = (**in_data_).spill_trailers_[0] + 4;
       mem_bank_.append( **in_data_, 0, xSize );
-      mem_bank_.header_->size_ += xSize;
 
       // Move the completed fragment to the Event memory bank.
       moveToEventBank();
@@ -117,7 +115,6 @@ void DataFragmentBuilder::process() {
       // This spill ends here and the next one starts after this.
       size_t xSize = (**in_data_).spill_trailers_[0] + 4;
       mem_bank_.append( **in_data_, 0, xSize );
-      mem_bank_.header_->size_ += xSize;
 
       // Move the completed fragment to the Event memory bank.
       moveToEventBank();
@@ -125,7 +122,6 @@ void DataFragmentBuilder::process() {
       // Add the data fron the following spill to the local memory bank which is now empty.
       xSize = (**in_data_).size() - (**in_data_).spill_headers_[0];
       mem_bank_.append( **in_data_, (**in_data_).spill_headers_[0], xSize );
-      mem_bank_.header_->size_ += xSize;
       return;
     }
   }
@@ -155,9 +151,7 @@ void DataFragmentBuilder::moveToEventBank() {
   }
 
   (**out_data_).append(this->mem_bank_);
-  (**out_data_).header_->size_ += this->mem_bank_.size();
   (**out_data_).header_->n_fragments_++;
-
   this->mem_bank_.clear();
 }
 

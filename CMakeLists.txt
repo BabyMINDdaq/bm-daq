@@ -7,6 +7,7 @@ MESSAGE("\n project: bm-daq \n")
 
 set(BMDAQ_DIR ${CMAKE_SOURCE_DIR})
 
+include(${CMAKE_BINARY_DIR}/FindLibUsb.cmake)
 include(${CMAKE_BINARY_DIR}/FindLibUfec.cmake)
 include(${CMAKE_BINARY_DIR}/FindLibUfecpp.cmake)
 include(${CMAKE_BINARY_DIR}/FindJsonCpp.cmake)
@@ -17,6 +18,8 @@ include(${CMAKE_BINARY_DIR}/FindCppUnit.cmake)
 
 find_package (Qt5Widgets REQUIRED)
 # find_package (Qt5Network REQUIRED)
+
+find_package(Doxygen)
 
 configure_file( ${CMAKE_BINARY_DIR}/deff.h.cmake
                 ${CMAKE_SOURCE_DIR}/src/BMDDeff.h)
@@ -61,3 +64,12 @@ if    (CPPUNIT_FOUND)
 endif (CPPUNIT_FOUND)
 
 
+if (_DOXYGEN_DOC AND DOXYGEN_FOUND)
+
+  message(" doxygen documentation ...\n")
+  add_custom_target(doc ALL)
+  add_custom_command(TARGET doc
+        COMMAND doxygen dox_config
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/doc)
+
+endif ()

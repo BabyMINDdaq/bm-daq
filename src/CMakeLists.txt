@@ -27,9 +27,12 @@ else (_STATIC)
 
 endif()
 
-target_link_libraries(bmdaq   ${UFECPP_LIBRARY}
+target_link_libraries(bmdaq   ${UFEC_LIBRARY}
+                              ${UFECPP_LIBRARY}
                               ${MIC11API_LIBRARY}
                               ${BMUNPACK_LIBRARY}
+                              ${JSONCPP_LIBRARY}
+                              ${ZMQ_LIBRARY}
 #                               Qt5::Network
                               Qt5::Widgets)
 

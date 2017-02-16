@@ -147,7 +147,6 @@ private:
   /** Id number of the front-end board. */
   int board_id_;
 
-
   UFEDataContainer  **in_data_;
   BMDEventMemBank   **out_data_;
   BMDBoardMemBank     mem_bank_;

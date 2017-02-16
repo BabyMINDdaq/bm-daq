@@ -177,32 +177,32 @@ proc_status_t BMDEventBuilder::process() {
   try {
     int boardId = (**output_).boardId();
 
-    int nSpillHeaders = (**output_).spill_headers_.size();
-    int nSpillTrailers = (**output_).spill_trailers_.size();
-
-    MDdataWordBM data_word_;
-
-    if (nSpillTrailers) {
-      for (auto const & t: (**output_).spill_trailers_) {
-        data_word_.SetDataPtr( (**output_).buffer() + t - 8);
-        cerr << "$$1 " << data_word_ << endl;
-
-        data_word_.SetDataPtr( (**output_).buffer() + t - 4);
-        cerr << "$$2 " << data_word_ << endl;
-
-        data_word_.SetDataPtr( (**output_).buffer() + t );
-        cerr << "$$3 " << data_word_ << endl;
-      }
-
-      cerr << "\n\n\n";
-    }
-
-    if (nSpillHeaders) {
-      for (auto const & h: (**output_).spill_headers_) {
-        data_word_.SetDataPtr( (**output_).buffer() + h );
-        cerr << "$$ " << data_word_ << endl;
-      }
-    }
+//     int nSpillHeaders = (**output_).spill_headers_.size();
+//     int nSpillTrailers = (**output_).spill_trailers_.size();
+// 
+//     MDdataWordBM data_word_;
+// 
+//     if (nSpillTrailers) {
+//       for (auto const & t: (**output_).spill_trailers_) {
+//         data_word_.SetDataPtr( (**output_).buffer() + t - 8);
+//         cerr << "$$1 " << data_word_ << endl;
+// 
+//         data_word_.SetDataPtr( (**output_).buffer() + t - 4);
+//         cerr << "$$2 " << data_word_ << endl;
+// 
+//         data_word_.SetDataPtr( (**output_).buffer() + t );
+//         cerr << "$$3 " << data_word_ << endl;
+//       }
+// 
+//       cerr << "\n\n\n";
+//     }
+// 
+//     if (nSpillHeaders) {
+//       for (auto const & h: (**output_).spill_headers_) {
+//         data_word_.SetDataPtr( (**output_).buffer() + h );
+//         cerr << "$$ " << data_word_ << endl;
+//       }
+//     }
 
     // Add the incoming data to the memory bank of the corresponding fragment builder.
     // If the fragment is completed, the fragment builder will move the data to the

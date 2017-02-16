@@ -53,14 +53,14 @@ void TestWorkers::TestEventBuilderInitClose() {
   eb1.init();
 
   CPPUNIT_ASSERT( eb1.spill_mem_bank_->size() == sizeof(BMDEventHeader) );
-  CPPUNIT_ASSERT( eb1.spill_mem_bank_->memsize() == 2000*ctx->ufec_ctx_->readout_buffer_size_ );
+  CPPUNIT_ASSERT( eb1.spill_mem_bank_->memsize() == 40000*ctx->ufec_ctx_->readout_buffer_size_ );
 
   CPPUNIT_ASSERT( ctx->devs_.size() == 2 );
   for (auto const & dev: ctx->devs_)
     for (auto const & b: dev.boards()) {
       CPPUNIT_ASSERT( eb1.board_event_builders_.find(b) != eb1.board_event_builders_.end() );
       CPPUNIT_ASSERT( eb1.board_event_builders_[b]->getMemBankPtr()->size() == sizeof(BMDDataFragmenHeader) );
-      CPPUNIT_ASSERT( eb1.board_event_builders_[b]->getMemBankPtr()->memsize() == 100*ctx->ufec_ctx_->readout_buffer_size_ );
+      CPPUNIT_ASSERT( eb1.board_event_builders_[b]->getMemBankPtr()->memsize() == 2000*ctx->ufec_ctx_->readout_buffer_size_ );
     }
 
   eb1.close(proc_status_t::OK_s);
